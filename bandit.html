@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stochastik-Casino: Slot-Machine</title>
+    <!-- Tailwind CSS für modernes, ansprechendes UI-Design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght=600;800&family=Inter:wght=300;400;600;700&display=swap');
+        
+        .font-casino {
+            font-family: 'Cinzel', serif;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+        }
+        @keyframes blurAnimate {
+            0% { filter: blur(0px); }
+            50% { filter: blur(4px); transform: translateY(5px); }
+            100% { filter: blur(0px); }
+        }
+        .reel-spinning {
+            animation: blurAnimate 0.1s infinite linear;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                    <span class="font-casino text-slate-950 text-xl font-bold">C</span>
+                </div>
+                <div>
+                    <h1 class="font-casino text-xl sm:text-2xl font-extrabold tracking-wider text-amber-400">STOCHASTIK-CASINO</h1>
+                    <p class="text-xs text-slate-400 tracking-widest uppercase">Station 4: Slot-Machine</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 w-full flex-grow items-start">
+        
+        <!-- Left: Slot Machine Reels and Interactive Lever -->
+        <div class="lg:col-span-7 bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-md flex flex-col items-center">
+            
+            <!-- Gewinntabelle Übersicht -->
+            <div class="w-full grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6 text-center text-xs bg-slate-950/60 p-3 rounded-xl border border-slate-800/50">
+                <div class="p-1"><span class="font-casino text-amber-400 font-bold">3x 7️⃣</span><br><span class="text-slate-400">Wertung: 25</span></div>
+                <div class="p-1"><span class="font-casino text-slate-300 font-bold">3x 🔔</span><br><span class="text-slate-400">Wertung: 10</span></div>
+                <div class="p-1"><span class="font-casino text-cyan-400 font-bold">3x 💎</span><br><span class="text-slate-400">Wertung: 5</span></div>
+                <div class="p-1"><span class="font-casino text-rose-400 font-bold">3x 🍒</span><br><span class="text-slate-400">Wertung: 3</span></div>
+                <div class="p-1 col-span-2 sm:col-span-1"><span class="font-casino text-emerald-400 font-bold">Ein Paar</span><br><span class="text-slate-400">Wertung: 1</span></div>
+            </div>
+
+            <!-- Main Housing with Lever Side-by-Side -->
+            <div class="w-full flex items-center justify-center gap-6">
+                
+                <!-- Slot Machine Housing -->
+                <div class="flex-grow max-w-lg bg-gradient-to-b from-slate-950 to-slate-900 border-4 border-slate-800 rounded-3xl p-6 shadow-2xl relative my-2">
+                    
+                    <!-- Goldene Zierleiste -->
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600 rounded-t-xl"></div>
+                    
+                    <!-- The Reels Container -->
+                    <div class="grid grid-cols-3 gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800 shadow-inner relative overflow-hidden">
+                        
+                        <!-- Horizontale Visier-Linien -->
+                        <div class="absolute inset-y-0 left-0 right-0 border-y-2 border-amber-500/20 pointer-events-none my-auto h-20 bg-amber-500/[0.02]"></div>
+
+                        <!-- Reel 1 -->
+                        <div id="reel1" class="h-32 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 rounded-lg border border-slate-700/60 flex items-center justify-center text-5xl transition-all">
+                            7️⃣
+                        </div>
+                        <!-- Reel 2 -->
+                        <div id="reel2" class="h-32 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 rounded-lg border border-slate-700/60 flex items-center justify-center text-5xl transition-all">
+                            🔔
+                        </div>
+                        <!-- Reel 3 -->
+                        <div id="reel3" class="h-32 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 rounded-lg border border-slate-700/60 flex items-center justify-center text-5xl transition-all">
+                            🍒
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Lever (Hebel) -->
+                <div class="flex flex-col items-center justify-center h-64 relative w-16 select-none">
+                    <!-- Base Mount of the Lever (Zentrierter Sockel auf z-10) -->
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-slate-800 to-slate-950 border-2 border-slate-700 flex items-center justify-center shadow-lg relative z-10">
+                        <div class="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 shadow-inner"></div>
+                    </div>
+                    
+                    <!-- Lever Rod & Ball Container (Zentriert über left-1/2 und negativen Margin, z-0 läuft dahinter) -->
+                    <div id="leverContainer" onclick="pullLever()" class="absolute bottom-1/2 left-1/2 -ml-6 w-12 h-36 origin-bottom transition-transform duration-300 ease-out cursor-pointer flex flex-col items-center justify-end pb-4 z-0" style="transform: rotate(0deg);">
+                        <!-- Red Knob -->
+                        <div id="leverKnob" class="w-10 h-10 rounded-full bg-gradient-to-tr from-red-700 via-red-500 to-red-400 shadow-lg shadow-red-900/50 hover:brightness-110 active:scale-95 transition-transform duration-100 border border-red-600/40"></div>
+                        <!-- Metallic Rod -->
+                        <div class="w-2.5 h-24 bg-gradient-to-r from-slate-400 via-slate-200 to-slate-500 rounded-full shadow-inner -mt-1"></div>
+                    </div>
+                    
+                    <!-- Small instruction label -->
+                    <span class="absolute -bottom-8 text-[10px] uppercase text-slate-500 tracking-wider text-center w-24">Hebel ziehen</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right: Results & Testreihen-Protokoll -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+            
+            <!-- Result Display -->
+            <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-md text-center">
+                <span class="text-xs uppercase tracking-widest text-slate-500 font-semibold">Letztes Ergebnis</span>
+                <div class="flex justify-center items-center gap-6 mt-4">
+                    <div id="resultBox" class="w-24 h-24 rounded-2xl bg-slate-800 border-2 border-slate-700 flex items-center justify-center shadow-lg transition-all duration-300">
+                        <span id="resultWinText" class="text-4xl font-extrabold font-casino text-slate-400">-</span>
+                    </div>
+                    <div class="text-left">
+                        <div id="payoutStatusText" class="text-xl font-bold text-slate-300 font-casino">Bereit</div>
+                        <div id="payoutDetails" class="text-xs text-slate-500 mt-1">Hebel betätigen</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats & History Grid -->
+            <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-md flex flex-col gap-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-casino text-slate-300 font-bold tracking-wide">Testreihen-Protokoll</h3>
+                    <span id="spinCounter" class="bg-slate-950 px-3 py-1 rounded-full text-xs font-semibold text-amber-400 border border-slate-800">
+                        Drehungen: 0
+                    </span>
+                </div>
+
+                <div class="bg-slate-950/80 rounded-xl border border-slate-800/80 overflow-hidden h-48 flex flex-col justify-between">
+                    <div id="historyContainer" class="p-4 overflow-y-auto space-y-2 text-sm flex-grow">
+                        <p id="emptyHistoryText" class="text-slate-600 text-center py-12 italic">Noch keine Drehungen durchgeführt.</p>
+                    </div>
+                    <button onclick="resetSlotGame()" class="w-full py-2 bg-slate-900 hover:bg-slate-800/80 text-xs text-slate-400 border-t border-slate-800 transition duration-150">
+                        Verlauf zurücksetzen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950/80 py-4 px-6 text-center text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto">
+            Stochastik-Casino-Simulator | Dr.-Ing. Daniel Eggert | Bismarck-Gymnasium Genthin
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Definitionen der Symbole ---
+        const SYMBOLS = ["7", "BAR", "DIA", "KIR"];
+
+        // Mappings für grafische Emojis
+        const SYMBOL_EMOJIS = {
+            "7": "7️⃣",
+            "BAR": "🔔",
+            "DIA": "💎",
+            "KIR": "🍒"
+        };
+
+        // --- 2. Asymmetrische Verteilungen pro Walze (Gezinkt für die Stochastik-Aufgabe) ---
+        // Walze 1: Ausgewogen hoher Kirsch-Anteil
+        const WEIGHTS_REEL_1 = { "7": 0.10, "BAR": 0.20, "DIA": 0.30, "KIR": 0.40 };
+        // Walze 2: Sehr hoher BAR-Anteil, kaum Siebenen
+        const WEIGHTS_REEL_2 = { "7": 0.05, "BAR": 0.50, "DIA": 0.20, "KIR": 0.25 };
+        // Walze 3: Sehr hoher Diamanten-Anteil, mittlere Siebenen
+        const WEIGHTS_REEL_3 = { "7": 0.15, "BAR": 0.15, "DIA": 0.50, "KIR": 0.20 };
+
+        // --- 3. App-Zustand ---
+        let totalSpins = 0;
+        let isSpinning = false;
+
+        // --- 4. Gewichtete Zufallsziehung für eine Walze ---
+        function getWeightedSymbol(weightMap) {
+            const r = Math.random();
+            let sum = 0;
+            for (let sym of SYMBOLS) {
+                sum += weightMap[sym];
+                if (r <= sum) return sym;
+            }
+            return SYMBOLS[SYMBOLS.length - 1];
+        }
+
+        // --- 5. Hebel-Interaktion und Auslöser ---
+        function pullLever() {
+            if (isSpinning) return;
+
+            const lever = document.getElementById('leverContainer');
+            const knob = document.getElementById('leverKnob');
+            
+            // Hebel nach unten bewegen (Rotation im CSS)
+            lever.style.transform = "rotate(130deg)";
+            knob.style.transform = "scale(0.9)";
+            
+            // Kurz warten, Hebel schnellt zurück, Drehung startet
+            setTimeout(() => {
+                lever.style.transform = "rotate(0deg)";
+                knob.style.transform = "scale(1)";
+                spinSlots();
+            }, 300);
+        }
+
+        // --- 6. Dreh-Animation und Ablauf ---
+        function spinSlots() {
+            totalSpins++;
+
+            const r1El = document.getElementById('reel1');
+            const r2El = document.getElementById('reel2');
+            const r3El = document.getElementById('reel3');
+
+            // CSS-Animationen für das "Verschwimmen" aktivieren
+            r1El.classList.add('reel-spinning');
+            r2El.classList.add('reel-spinning');
+            r3El.classList.add('reel-spinning');
+            isSpinning = true;
+
+            // Ziehung im Hintergrund festlegen
+            const res1 = getWeightedSymbol(WEIGHTS_REEL_1);
+            const res2 = getWeightedSymbol(WEIGHTS_REEL_2);
+            const res3 = getWeightedSymbol(WEIGHTS_REEL_3);
+
+            let intervalsCount = 0;
+            const maxIntervals = 20;
+
+            // Schnelles Durchwechseln der Symbole simulieren
+            const spinInterval = setInterval(() => {
+                if (intervalsCount < maxIntervals - 6) {
+                    r1El.textContent = SYMBOL_EMOJIS[SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]];
+                }
+                if (intervalsCount < maxIntervals - 3) {
+                    r2El.textContent = SYMBOL_EMOJIS[SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]];
+                }
+                if (intervalsCount < maxIntervals) {
+                    r3El.textContent = SYMBOL_EMOJIS[SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]];
+                }
+
+                intervalsCount++;
+                if (intervalsCount >= maxIntervals) {
+                    clearInterval(spinInterval);
+                    
+                    // Animationen stoppen und finale Symbole setzen
+                    r1El.classList.remove('reel-spinning');
+                    r2El.classList.remove('reel-spinning');
+                    r3El.classList.remove('reel-spinning');
+
+                    r1El.textContent = SYMBOL_EMOJIS[res1];
+                    r2El.textContent = SYMBOL_EMOJIS[res2];
+                    r3El.textContent = SYMBOL_EMOJIS[res3];
+
+                    // Auswertung starten
+                    evaluateResult(res1, res2, res3);
+                    isSpinning = false;
+                }
+            }, 100);
+        }
+
+        // --- 7. Auswertung der Gewinnkonditionen ---
+        function evaluateResult(s1, s2, s3) {
+            let profit = 0;
+            let winName = "Kein Treffer";
+            let boxColorClass = "bg-slate-800 border-slate-700 text-slate-400";
+
+            if (s1 === s2 && s2 === s3) {
+                // 3er-Kombinationen
+                if (s1 === "7") { profit = 25; winName = "JACKPOT! (3x 7️⃣)"; boxColorClass = "bg-amber-950 border-amber-500 text-amber-400 shadow-amber-500/20"; }
+                else if (s1 === "BAR") { profit = 10; winName = "Glocken-Trio (3x 🔔)"; boxColorClass = "bg-slate-900 border-slate-400 text-slate-200"; }
+                else if (s1 === "DIA") { profit = 5; winName = "Kristalle (3x 💎)"; boxColorClass = "bg-cyan-950 border-cyan-500 text-cyan-400"; }
+                else if (s1 === "KIR") { profit = 3; winName = "Frucht-Trio (3x 🍒)"; boxColorClass = "bg-rose-950 border-rose-500 text-rose-400"; }
+            } else if (s1 === s2 || s2 === s3 || s1 === s3) {
+                // Paar-Kombinationen
+                profit = 1;
+                winName = "EIN PAAR";
+                boxColorClass = "bg-emerald-950 border-emerald-600 text-emerald-400";
+            }
+
+            // UI-Elemente updaten
+            const resBox = document.getElementById('resultBox');
+            const resWinText = document.getElementById('resultWinText');
+            const payoutStatusText = document.getElementById('payoutStatusText');
+            const payoutDetails = document.getElementById('payoutDetails');
+
+            if (resBox) resBox.className = `w-24 h-24 rounded-2xl border-2 flex items-center justify-center shadow-lg transition-all duration-300 scale-105 ${boxColorClass}`;
+            if (resWinText) resWinText.textContent = profit > 0 ? `+${profit}` : "0";
+            if (payoutStatusText) payoutStatusText.textContent = winName;
+            if (payoutDetails) payoutDetails.textContent = profit > 0 ? `Wertung stieg um: ${profit}` : "Keine Punkte erzielt";
+
+            // Historie befüllen
+            const historyContainer = document.getElementById('historyContainer');
+            const emptyText = document.getElementById('emptyHistoryText');
+            if (emptyText) emptyText.remove();
+
+            if (historyContainer) {
+                const entry = document.createElement('div');
+                entry.className = "flex justify-between items-center bg-slate-900 border border-slate-800/80 px-3 py-2 rounded-lg text-xs";
+                
+                let dotColor = "bg-slate-600";
+                if (profit >= 10) dotColor = "bg-amber-400";
+                else if (profit > 1) dotColor = "bg-cyan-400";
+                else if (profit === 1) dotColor = "bg-emerald-500";
+
+                const e1 = SYMBOL_EMOJIS[s1];
+                const e2 = SYMBOL_EMOJIS[s2];
+                const e3 = SYMBOL_EMOJIS[s3];
+
+                entry.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full ${dotColor}"></span>
+                        <span class="font-semibold text-slate-300">Dreh #${totalSpins < 10 ? '0' + totalSpins : totalSpins}</span>
+                    </div>
+                    <span class="font-mono text-slate-400">[ ${e1} | ${e2} | ${e3} ] -> <strong class="text-slate-200">${winName}</strong></span>
+                `;
+                historyContainer.insertBefore(entry, historyContainer.firstChild);
+            }
+
+            const counter = document.getElementById('spinCounter');
+            if (counter) counter.textContent = `Drehungen: ${totalSpins}`;
+        }
+
+        // --- 8. Zurücksetzen ---
+        function resetSlotGame() {
+            totalSpins = 0;
+            isSpinning = false;
+
+            const counter = document.getElementById('spinCounter');
+            if (counter) counter.textContent = "Drehungen: 0";
+
+            const historyContainer = document.getElementById('historyContainer');
+            if (historyContainer) {
+                historyContainer.innerHTML = '<p id="emptyHistoryText" class="text-slate-600 text-center py-12 italic">Noch keine Drehungen durchgeführt.</p>';
+            }
+
+            const resBox = document.getElementById('resultBox');
+            const resWinText = document.getElementById('resultWinText');
+            if (resBox) resBox.className = "w-24 h-24 rounded-2xl bg-slate-800 border-2 border-slate-700 flex items-center justify-center shadow-lg";
+            if (resWinText) resWinText.textContent = "-";
+
+            const payoutStatusText = document.getElementById('payoutStatusText');
+            if (payoutStatusText) payoutStatusText.textContent = "Bereit";
+
+            const payoutDetails = document.getElementById('payoutDetails');
+            if (payoutDetails) payoutDetails.textContent = "Hebel betätigen";
+
+            // Standardanzeige der Walzen wiederherstellen
+            document.getElementById('reel1').textContent = "7️⃣";
+            document.getElementById('reel2').textContent = "🔔";
+            document.getElementById('reel3').textContent = "🍒";
+        }
+    </script>
+</body>
+</html>
